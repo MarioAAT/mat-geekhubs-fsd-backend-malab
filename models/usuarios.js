@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const inscripciones = require('./inscripciones');
 module.exports = (sequelize, DataTypes) => {
   class usuarios extends Model {
     static associate(models) {
@@ -10,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: 'id_rol'
         });
       usuarios.hasMany(models.reservas, {
+        foreignKey: 'id_usuario'
+      });
+      usuarios.belongsToMany(models.cursos, {
+        through: 'inscripciones',
         foreignKey: 'id_usuario'
       })
     }
