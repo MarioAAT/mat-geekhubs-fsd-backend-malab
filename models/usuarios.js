@@ -8,8 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       usuarios.belongsTo(
         models.roles, {
           foreignKey: 'id_rol'
-        }
-      )
+        });
+      usuarios.hasMany(models.reservas, {
+        foreignKey: 'id_usuario'
+      })
     }
   }
   usuarios.init({
