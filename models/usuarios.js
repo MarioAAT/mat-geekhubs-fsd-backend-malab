@@ -4,22 +4,22 @@ const {
 } = require('sequelize');
 const inscripciones = require('./inscripciones');
 module.exports = (sequelize, DataTypes) => {
-  class usuarios extends Model {
+  class Usuarios extends Model {
     static associate(models) {
-      usuarios.belongsTo(
-        models.roles, {
+      Usuarios.belongsTo(
+        models.Role, {
           foreignKey: 'id_rol'
         });
-      usuarios.hasMany(models.reservas, {
+      Usuarios.hasMany(models.Reservas, {
         foreignKey: 'id_usuario'
       });
-      usuarios.belongsToMany(models.cursos, {
+      Usuarios.belongsToMany(models.Cursos, {
         through: 'inscripciones',
         foreignKey: 'id_usuario'
       })
     }
   }
-  usuarios.init({
+  Usuarios.init({
     nombre: DataTypes.STRING,
     apellido: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     id_rol: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'usuarios',
+    modelName: 'Usuarios',
   });
-  return usuarios;
+  return Usuarios;
 };

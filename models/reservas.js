@@ -3,17 +3,17 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class reservas extends Model {
+  class Reservas extends Model {
     static associate(models) {
-      reservas.belongsTo(models.usuarios, {
+      Reservas.belongsTo(models.Usuarios, {
         foreignKey: 'id_usuario'
       });
-      reservas.belongsTo(models.mesas_de_trabajo, {
+      Reservas.belongsTo(models.Mesas_de_trabajo, {
         foreignKey: 'id_mesa'
       })
     }
   }
-  reservas.init({
+  Reservas.init({
     fecha_reserva: DataTypes.DATE,
     hora_inicio: DataTypes.TIME,
     hora_fin: DataTypes.TIME,
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     id_mesa: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'reservas',
+    modelName: 'Reservas',
   });
-  return reservas;
+  return Reservas;
 };
