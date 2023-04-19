@@ -15,7 +15,7 @@ app.use(cors())
 
 app.use(express.json());
 
-// const rutas = require('./rutas')
+const rutas = require('./rutas')
 // app.use('/api', rutas)
 
 const db = require('./db')
