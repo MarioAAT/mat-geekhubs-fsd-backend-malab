@@ -53,7 +53,7 @@ module.exports = class UsuarioCtrl {
             return res.status(500).json({
                 success: false,
                 message: '¡Error! - Algo ha ido mal',
-                error: error.mensaje
+                error: error.message
             })
         }
     }
@@ -74,13 +74,13 @@ module.exports = class UsuarioCtrl {
             return res.status(201).json({
                 success: true,
                 message: '¡Éxito! - ¡Usuario añadido con éxito!',
-                user: respuesta.id,
+                user: respuesta.id
             })
         } catch (error) {
             return res.status(500).json({
             success: false,
             message: '¡Error! - Algo ha ido mal.',
-            error: error.mensaje
+            error: error.message
             })
         }
     }
@@ -97,7 +97,7 @@ module.exports = class UsuarioCtrl {
                 id_rol: req.body.id_rol,
             }, { where: { id: req.params.id } })
             return res.status(201).json({
-                success : true,
+                success: true,
                 message: '¡Éxito! - Usuario actualizado con éxito.',
                 user: respuesta.id
             })

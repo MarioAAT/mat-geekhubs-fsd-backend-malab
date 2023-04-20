@@ -5,7 +5,7 @@ module.exports = class MesasCtrl {
     // METODO PARA LLAMAR A TODOS LAS MESAS 
     static async apiGetAllMesas (req, res) {
         try {
-            const respuesta = await Mesas_de_trabajo.findAll ({
+            const respuesta = await Mesas_de_trabajo.findAll({
                 attributes: ['id', 'nombre', 'tamaño', 'descripcion']
             })
             if (!respuesta) {
@@ -14,7 +14,11 @@ module.exports = class MesasCtrl {
                     message: '¡Error! - Algo ha ido mal' 
                 })
             } else {
-                return res.json(respuesta)
+                return res.status(201).json({
+                    success: true,
+                    message: '¡Éxito! - ¡La información de las mesas se recuperó con éxito!',
+                    lista_mesas: respuesta
+                })
             }
         } catch (error) {
             return res.status(500).json({ error })
@@ -24,7 +28,7 @@ module.exports = class MesasCtrl {
     // METODO PARA BUSCAR MESAS MEDIANTE ID
     static async apiGetMesasById (req, res) {
         try {
-            const mesasId = req.usuarioId
+            const mesasId = req.params.id
         
             const respuesta = await Mesas_de_trabajo.findByPk(mesasId, {
                 attributes: ['id', 'nombre', 'tamaño', 'descripcion']
@@ -44,7 +48,7 @@ module.exports = class MesasCtrl {
             return res.status(500).json({
                 success: false,
                 message: '¡Error! - Algo ha ido mal',
-                error: error.mensaje
+                error: error.message
             })
         }
     }
@@ -53,7 +57,6 @@ module.exports = class MesasCtrl {
     static async apiAddMesa (req, res) {
         try {    
             const nuevaMesa = {
-                id: req.body.id,
                 nombre: req.body.nombre,
                 tamaño: req.body.tamaño,
                 descripcion: req.body.descripcion
@@ -63,13 +66,13 @@ module.exports = class MesasCtrl {
             return res.status(201).json({
                 success: true,
                 message: '¡Éxito! - ¡Mesa añadida con éxito!',
-                mesas: respuesta.id,
+                mesas: respuesta.id
             })
         } catch (error) {
             return res.status(500).json({
             success: false,
             message: '¡Error! - Algo ha ido mal.',
-            error: error.mensaje
+            error: error.message
             })
         }
     }
@@ -78,13 +81,12 @@ module.exports = class MesasCtrl {
     static async apiUpdateMesa (req, res) {
         try {
             const respuesta = await Mesas_de_trabajo.update({
-                id: req.body.id,
                 nombre: req.body.nombre,
                 tamaño: req.body.tamaño,
-                descripcion: req.body.descripcion
-            }, { where: { id: req.body.id } })
+                descripcion: req.body.descripcion,
+            }, { where: { id: req.params.id } })
             return res.status(201).json({
-                success  : true,
+                success: true,
                 message: '¡Éxito! - Mesa actualizada con éxito.',
                 mesa: respuesta.id
             })
@@ -92,7 +94,7 @@ module.exports = class MesasCtrl {
             return res.status(500).json({
                 success: false,
                 message: '¡Error! - Algo ha ido mal.',
-                error: error.mensaje
+                error: error.message
             })
         }
     }

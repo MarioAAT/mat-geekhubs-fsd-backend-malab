@@ -7,4 +7,7 @@ router.use(usuarioRoutes)
 const mesasRoutes = require('./rutas/rutas.mesas')
 router.use(mesasRoutes)
 
+const reservasRoutes = require('./rutas/rutas.reservas')
+router.use(reservasRoutes)
+
 module.exports = router
