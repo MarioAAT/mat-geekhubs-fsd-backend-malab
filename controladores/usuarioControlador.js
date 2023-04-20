@@ -12,19 +12,19 @@ module.exports = class UsuarioCtrl {
             })
             if (!respuesta) {
                 return res.status(404).json({
-                exito: false,
-                mensaje: '¡Lo siento! - ¡No hay usuarios registrados en este momento!'
+                success: false,
+                message: '¡Lo siento! - ¡No hay usuarios registrados en este momento!'
                 })
             }
             return res.status(201).json({
-                exito: true,
-                mensaje: '¡Éxito! - ¡La información de los usuarios se recuperó con éxito!',
-                lista_usuarios: response
+                success: true,
+                message: '¡Éxito! - ¡La información de los usuarios se recuperó con éxito!',
+                lista_usuarios: respuesta
             })
         } catch (error) {
             return res.status(500).json({
-                exito: false,
-                mensaje: '¡Error! - Algo ha ido mal',
+                success: false,
+                message: '¡Error! - Algo ha ido mal',
                 error: error.message
             })
         }
@@ -40,19 +40,19 @@ module.exports = class UsuarioCtrl {
             })
             if (!respuesta) {
                 return res.status(404).json({
-                exito: false,
-                mensaje: '¡Lo siento! - El usuario no existe en la base de datos.'
+                success: false,
+                message: '¡Lo siento! - El usuario no existe en la base de datos.'
                 })
             }
             return res.status(201).json({
-                exito: true,
-                mensaje: '¡Éxito! - Usuario recuperado con éxito.',
+                success: true,
+                message: '¡Éxito! - Usuario recuperado con éxito.',
                 usuario: respuesta
             })
         } catch (error) {
             return res.status(500).json({
-                exito: false,
-                mensaje: '¡Error! - Algo ha ido mal',
+                success: false,
+                message: '¡Error! - Algo ha ido mal',
                 error: error.mensaje
             })
         }
@@ -73,14 +73,14 @@ module.exports = class UsuarioCtrl {
             const respuesta = await Usuarios.create(nuevoUsuario)
     
             return res.status(201).json({
-                sucess: true,
-                mensaje: '¡Éxito! - ¡Usuario añadido con éxito!',
+                success: true,
+                message: '¡Éxito! - ¡Usuario añadido con éxito!',
                 user: respuesta.id,
             })
         } catch (error) {
             return res.status(500).json({
-            sucess: false,
-            mensaje: '¡Error! - Algo ha ido mal.',
+            success: false,
+            message: '¡Error! - Algo ha ido mal.',
             error: error.mensaje
             })
         }
@@ -99,14 +99,14 @@ module.exports = class UsuarioCtrl {
                 id_rol: req.body.id_rol,
             }, { where: { id: req.body.id } })
             return res.status(201).json({
-                exito  : true,
-                mensaje: '¡Éxito! - Usuario actualizado con éxito.',
+                success  : true,
+                message: '¡Éxito! - Usuario actualizado con éxito.',
                 usuario: respuesta.id
             })
         } catch (error) {
             return res.status(500).json({
-                exito: false,
-                mensaje: '¡Error! - Algo ha ido mal.',
+                success: false,
+                message: '¡Error! - Algo ha ido mal.',
                 error: error.mensaje
             })
         }
@@ -118,18 +118,18 @@ module.exports = class UsuarioCtrl {
             const respuesta = await Usuarios.destroy({ where: { id: req.params.id } })
             if (!respuesta) {
                 return res.status(404).json({
-                exito: false,
-                mensaje: '¡Lo siento! - El usuario no existe en la base de datos.'
+                success: false,
+                message: '¡Lo siento! - El usuario no existe en la base de datos.'
                 })
             }
             return res.status(201).json({
-                exito: true,
-                mensaje: '¡Éxito! - El usuario ha sido eliminado con éxito.'
+                success: true,
+                message: '¡Éxito! - El usuario ha sido eliminado con éxito.'
             })
         } catch (error) {
             return res.status(500).json({
-                exito: false,
-                mensaje: '¡Error! - Algo ha ido mal',
+                success: false,
+                message: '¡Error! - Algo ha ido mal',
                 error: error.mensaje
             })
         }
