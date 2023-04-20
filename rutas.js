@@ -10,4 +10,7 @@ router.use(mesasRoutes)
 const reservasRoutes = require('./rutas/rutas.reservas')
 router.use(reservasRoutes)
 
+const autRoutes = require('./rutas/rutas.aut')
+router.use(autRoutes)
+
 module.exports = router
