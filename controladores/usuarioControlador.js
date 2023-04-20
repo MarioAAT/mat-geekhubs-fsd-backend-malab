@@ -1,4 +1,5 @@
 const { Usuarios } = require("../models/index");
+const bcrypt = require('bcrypt')
 
 module.exports = class UsuarioCtrl {
 
@@ -60,16 +61,18 @@ module.exports = class UsuarioCtrl {
 
     // METODO PARA CREAR UN NUEVO USUARIO
     static async apiAddUsuario (req, res) {
-        try {    
-            const nuevoUsuario = {
-                nombre: req.body.nombre,
-                apellido: req.body.apellido,
-                email: req.body.email,
-                telefono: req.body.telefono,
-                password: req.body.password,
-                id_rol: req.body.id_rol,
+        try {
+            const {nombre, apellido, email, telefono, password} = req.body;
+            const passwordEncriptado = bcrypt.hashSync(password, 10);
+            const usuario = {
+                nombre: nombre,
+                apellido: apellido,
+                email: email,
+                telefono: telefono,
+                password: passwordEncriptado,
+                id_rol: 2
             }
-            const respuesta = await Usuarios.create(nuevoUsuario)
+            const respuesta = await Usuarios.create(usuario)
     
             return res.status(201).json({
                 success: true,
