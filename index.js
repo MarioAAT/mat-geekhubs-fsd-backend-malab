@@ -16,7 +16,7 @@ app.use(cors())
 app.use(express.json());
 
 const rutas = require('./rutas')
-// app.use('/api', rutas)
+app.use('/api', rutas)
 
 const db = require('./db')
 const PORT = process.env.PORT || 3000 

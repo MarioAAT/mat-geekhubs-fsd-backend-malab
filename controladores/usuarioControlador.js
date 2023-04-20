@@ -33,7 +33,7 @@ module.exports = class UsuarioCtrl {
     // METODO PARA BUSCAR UN USUARIO MEDIANTE ID
     static async apiGetUsuarioById (req, res) {
         try {
-            const usuarioId = req.usuarioId
+            const usuarioId = req.params.id
         
             const respuesta = await Usuarios.findByPk(usuarioId, {
                 attributes: ['id', 'nombre', 'apellido', 'email', 'telefono', 'id_rol','createdAt', 'updatedAt']
@@ -62,7 +62,6 @@ module.exports = class UsuarioCtrl {
     static async apiAddUsuario (req, res) {
         try {    
             const nuevoUsuario = {
-                id: req.body.id,
                 nombre: req.body.nombre,
                 apellido: req.body.apellido,
                 email: req.body.email,
@@ -90,18 +89,17 @@ module.exports = class UsuarioCtrl {
     static async apiUpdateUsuario (req, res) {
         try {
             const respuesta = await Usuarios.update({
-                id: req.body.id,
                 nombre: req.body.nombre,
                 apellido: req.body.apellido,
                 email: req.body.email,
                 telefono: req.body.telefono,
                 password: req.body.password,
                 id_rol: req.body.id_rol,
-            }, { where: { id: req.body.id } })
+            }, { where: { id: req.params.id } })
             return res.status(201).json({
-                success  : true,
+                success : true,
                 message: '¡Éxito! - Usuario actualizado con éxito.',
-                usuario: respuesta.id
+                user: respuesta.id
             })
         } catch (error) {
             return res.status(500).json({
