@@ -4,12 +4,12 @@ const app = express ();
 
 require('dotenv').config();
 
-let corsOption = {
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-}
+// let corsOption = {
+//     origin: "*",
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     preflightContinue: false,
+//     optionsSuccessStatus: 204
+// }
 
 app.use(cors())
 

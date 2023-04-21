@@ -7,31 +7,31 @@ module.exports = class AutCtrl {
 
     static async login (req, res) {
         try {
-            const { email, password } = req.body
+            const { email, password } = req.body;
             const usuario = await Usuarios.findOne({
-                where: { email },
-                attributes: ['id', 'nombre', 'apellido', 'email', 'telefono', 'id_rol']
+                where: { email: email }
             })
             if (!usuario) {
                 return res.status(400).json({
                     success: false,
-                    message: '¡Error! - Algo ha ido mal'
+                    message: '¡Error! - Usuario equivocado'
                 })
             }
-            const isMatch = bcrypt.compareSync(password, usuario.password)
+            const isMatch = bcrypt.compareSync(password, usuario.password);
             if(!isMatch) {
                 return res.status(400).json({
                     success: false,
                     message: '¡Error! - Algo ha ido mal'
                 })
             }
-            const token = jwt.login(
+            const token = jwt.sign(
                 {
-                    usuarioId: usuario.id
+                    usuarioId: usuario.id,
+                    rolId: usuario.id_rol
                 },
                 process.env.SECRET,
-                { expira: '5h' }
-            )
+                { expiresIn: '2h' }
+            );
             return res.status(201).json({
                 success: true,
                 message: '¡Acceso permitido!',

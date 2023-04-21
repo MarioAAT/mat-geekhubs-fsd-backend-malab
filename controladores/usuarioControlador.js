@@ -8,8 +8,7 @@ module.exports = class UsuarioCtrl {
         try {
             const respuesta = await Usuarios.findAll({
                 order: [['id', 'DESC']],
-                attributes: ['id', 'nombre', 'apellido', 'email', 'telefono', 'id_rol','createdAt', 'updatedAt'],
-                // where: { role_id: { [Op.ne]: 4 } }
+                attributes: ['id', 'nombre', 'apellido', 'email', 'telefono', 'id_rol','createdAt', 'updatedAt']
             })
             if (!respuesta) {
                 return res.status(404).json({
@@ -91,13 +90,17 @@ module.exports = class UsuarioCtrl {
     // METODO PARA MODIFICAR USUARIOS
     static async apiUpdateUsuario (req, res) {
         try {
+            const {nombre, apellido, email, telefono, password, id_rol} = req.body;
+            // const userId = req.userId
+            const encryptedPassword = bcrypt.hashSync(password, 10);
+            
             const respuesta = await Usuarios.update({
-                nombre: req.body.nombre,
-                apellido: req.body.apellido,
-                email: req.body.email,
-                telefono: req.body.telefono,
-                password: req.body.password,
-                id_rol: req.body.id_rol,
+                nombre,
+                apellido,
+                email,
+                telefono,
+                password: encryptedPassword,
+                id_rol
             }, { where: { id: req.params.id } })
             return res.status(201).json({
                 success: true,

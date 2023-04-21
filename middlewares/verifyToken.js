@@ -1,47 +1,39 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
-const { Usuarios } = require('../models')
 
 const verifyToken = async (req, res, next) => {
     try {
-        const autorizacion = req.headers.autorizacion
-        if(!autorizacion) {
+        const authorization = req.headers.authorization;
+        if(!authorization) {
             return res.status(401).json({
                 success: false,
-                message: '¡No autorizado! - Ficha faltante.'
+                message: '¡No autorizado! - Token perdido.'
             })
         }
-        const [strategy, token] = autorizacion.split(' ')
-        const tokenData = jwt.verify(token, process.env.SECRET)
-        const usuario = await Usuarios.findByPk(token.Data.userId)
-        if(!usuario) {
-            return res.status(401).json({
-                seccess: false,
-                message: '¡No autorizado! - Ficha faltante.'
-            })
-        }
-        req.usuarioId = tokenData.usuarioId
-        req.rolId = tokenData.rolId 
-
+        const [strategy, token] = authorization.split(' ')
+        const tokenDeco = jwt.verify(token, process.env.SECRET);
+        req.usuarioId = tokenDeco.usuarioId;
+        req.rolId = tokenDeco.rolId;
+        req.email = tokenDeco.email
         next()
     } catch (error) {
     switch (error.name) {
-        case 'TokenExpiredError':
+        case 'TokenCaducado':
         return res.status(401).json({
             sucess: false,
             message: '¡No autorizado! - El token está caducado',
             expiredAt: error.expiredAt
         })
-        case 'NotBeforeError':
+        case 'Error':
         return res.status(401).json({
             sucess: false,
-            message: '¡No autorizado! - El token está caducado',
+            message: '¡No autorizado! - El token está inactivo',
             date: error.date
         })
         default:
         return res.status(401).json({
             sucess: false,
-            message: '¡No autorizado! - El token está caducado',
+            message: '¡No autorizado! - Error de Token',
             error: error.message
         })
     }
