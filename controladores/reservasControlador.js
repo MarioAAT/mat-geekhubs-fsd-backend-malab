@@ -1,4 +1,4 @@
-const { Reservas } = require('../models/index')
+const { Reservas, Usuarios, Mesas_de_trabajo } = require('../models/index')
 
 module.exports = class ReservasCtrl {
 
@@ -7,8 +7,22 @@ module.exports = class ReservasCtrl {
         try {
             const respuesta = await Reservas.findAll({
                 order: [['id', 'DESC']],
+                include: [
+                    {
+                        model: Usuarios,
+                        attributes: {
+                            exclude: ["password", "id", "id_rol", "email", "telefono", "createdAt", "updatedAt"]
+                        },
+                    },
+                    {
+                        model: Mesas_de_trabajo,
+                        attributes: {
+                            exclude: ["id", "tamaño", "descripcion", "createdAt", "updatedAt"]
+                        },
+                    },
+                ],
                 attributes: ['id', 'fecha_reserva', 'hora_inicio', 'hora_fin', 'id_usuario', 'id_mesa' ],
-                // where: { role_id: { [Op.ne]: 4 } }
+                
             })
             if (!respuesta) {
                 return res.status(404).json({
@@ -33,7 +47,7 @@ module.exports = class ReservasCtrl {
     // METODO PARA BUSCAR RESERVA MEDIANTE ID
     static async apiGetReservaById (req, res) {
         try {
-            const reservaId = req.params.id
+            const reservaId = req.params.reservaId
         
             const respuesta = await Reservas.findByPk(reservaId, {
                 attributes: ['id', 'fecha_reserva', 'hora_inicio', 'hora_fin', 'id_usuario', 'id_mesa']
@@ -127,6 +141,42 @@ module.exports = class ReservasCtrl {
                 success: false,
                 message: '¡Error! - Algo ha ido mal',
                 error: error.mensaje
+            })
+        }
+    }
+
+    static async getReservaUsuario (req,res) {
+        try {
+            const usuarioReserva = await Reservas.findAll(
+                {
+                    where: { 
+                        id_usuario: req.usuarioId 
+                    },
+                    include: [
+                        {
+                            model: Usuarios,
+                            attributes: {
+                                exclude: ["password", "id", "id_rol", "email", "telefono", "createdAt", "updatedAt"]
+                            },
+                        },
+                        {
+                            model: Mesas_de_trabajo,
+                            attributes: {
+                                exclude: ["id", "tamaño", "descripcion", "createdAt", "updatedAt"]
+                            },
+                        },
+                    ],
+                    attributes: {
+                        exclude: ["id", "id_usuario", "id_mesa", "createdAt", "updatedAt"]
+                    }
+                }
+            )
+            return res.json(usuarioReserva)
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Ups, something were wrong",
+                error: error.message
             })
         }
     }
