@@ -120,7 +120,7 @@ module.exports = class UsuarioCtrl {
     static async editAdminUsuario (req, res) {
         try {
             const {nombre, apellido, telefono, id_rol, id} = req.body;
-            const ID = req.params
+            const ID = req.params.id
             
             const respuesta = await Usuarios.update({   
                 id,
