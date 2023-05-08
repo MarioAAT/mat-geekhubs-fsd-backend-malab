@@ -33,7 +33,7 @@ module.exports = class UsuarioCtrl {
     // METODO PARA BUSCAR UN USUARIO MEDIANTE ID
     static async apiGetUsuarioById (req, res) {
         try {
-            const usuarioId = req.params.id
+            const usuarioId = req.usuarioId
         
             const respuesta = await Usuarios.findByPk(usuarioId, {
                 attributes: ['id', 'nombre', 'apellido', 'email', 'telefono', 'id_rol','createdAt', 'updatedAt']
@@ -91,7 +91,7 @@ module.exports = class UsuarioCtrl {
     static async apiUpdateUsuario (req, res) {
         try {
             const {nombre, apellido, email, telefono, password, id_rol} = req.body;
-            // const userId = req.userId
+            const id = req.id
             const encryptedPassword = bcrypt.hashSync(password, 10);
             
             const respuesta = await Usuarios.update({
@@ -101,7 +101,34 @@ module.exports = class UsuarioCtrl {
                 telefono,
                 password: encryptedPassword,
                 id_rol
-            }, { where: { id: req.params.id } })
+            }, { where: { id: id } })
+            return res.status(201).json({
+                success: true,
+                message: '¡Éxito! - Usuario actualizado con éxito.',
+                user: respuesta.id
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: '¡Error! - Algo ha ido mal.',
+                error: error.mensaje
+            })
+        }
+    }
+
+    //METODO PARA MODIFICAR USUARIO COMO ADMIN
+    static async editAdminUsuario (req, res) {
+        try {
+            const {nombre, apellido, telefono, id_rol, id} = req.body;
+            const ID = req.params
+            
+            const respuesta = await Usuarios.update({   
+                id,
+                nombre,
+                apellido,
+                telefono,
+                id_rol
+            }, { where: { id: ID } })
             return res.status(201).json({
                 success: true,
                 message: '¡Éxito! - Usuario actualizado con éxito.',
