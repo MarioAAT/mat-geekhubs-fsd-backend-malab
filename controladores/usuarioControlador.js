@@ -90,17 +90,15 @@ module.exports = class UsuarioCtrl {
     // METODO PARA MODIFICAR USUARIOS
     static async apiUpdateUsuario (req, res) {
         try {
-            const {nombre, apellido, email, telefono, password, id_rol} = req.body;
-            const id = req.id
+            const {nombre, apellido, telefono, password} = req.body;
+            const id = req.usuarioId
             const encryptedPassword = bcrypt.hashSync(password, 10);
             
             const respuesta = await Usuarios.update({
                 nombre,
                 apellido,
-                email,
                 telefono,
-                password: encryptedPassword,
-                id_rol
+                password: encryptedPassword
             }, { where: { id: id } })
             return res.status(201).json({
                 success: true,
