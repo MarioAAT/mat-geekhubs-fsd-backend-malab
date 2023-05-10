@@ -122,6 +122,30 @@ module.exports = class ReservasCtrl {
         }
     }
 
+    // METODO PARA MODIFICAR RESERVAS COMO USUARIO
+    static async apiUpdateReservaUsuario (req, res) {
+        try {
+            const respuesta = await Reservas.update({
+                fecha_reserva: req.body.fecha_reserva,
+                hora_inicio: req.body.hora_inicio,
+                hora_fin: req.body.hora_fin,
+                id_usuario: req.body.id_usuario,
+                id_mesa: req.body.id_mesa
+            }, { where: { id: req.params.id } })
+            return res.status(201).json({
+                success  : true,
+                message: '¡Éxito! - Reserva actualizada con éxito.',
+                reserva: respuesta.id
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: '¡Error! - Algo ha ido mal.',
+                error: error.mensaje
+            })
+        }
+    }
+
     //  METODO PARA ELIMINAR RESERVA
     static async apiDeleteReserva (req, res) {
         try {
