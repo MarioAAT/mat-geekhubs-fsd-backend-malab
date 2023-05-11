@@ -191,7 +191,7 @@ module.exports = class ReservasCtrl {
                         },
                     ],
                     attributes: {
-                        exclude: ["id", "id_usuario", "id_mesa", "createdAt", "updatedAt"]
+                        exclude: ["id_usuario", "id_mesa", "createdAt", "updatedAt"]
                     }
                 }
             )
